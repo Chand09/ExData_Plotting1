@@ -1,0 +1,15 @@
+
+dat<-read.csv("household_power_consumption.txt",header = TRUE,sep=";")
+dat1<-dat
+dat1$Date<-as.Date(dat1$Date,format="%d/%m/%Y")
+dat1$Time<-strptime(paste(dat$Date,dat$Time), format="%d/%m/%Y %H:%M:%S")
+d<-subset(dat1,Date>='2007-02-01')
+d<-subset(d,Date<='2007-02-02')
+d$Sub_metering_1<-as.numeric(as.character(d$Sub_metering_1))
+d$Sub_metering_2<-as.numeric(as.character(d$Sub_metering_2))
+d$Sub_metering_3<-as.numeric(as.character(d$Sub_metering_3))
+with(d,plot(Time,Sub_metering_1,type="l",ylab="Energy sub metering",xlab="",ylim=c(0,max(max(Sub_metering_1),max(Sub_metering_2),max(Sub_metering_3)))))lines(d$Time,d$Sub_metering_2,type="l",col="red")
+lines(d$Time,d$Sub_metering_3,type="l",col="blue")
+legend("topright",pch="-",col=c("black","red","blue"),legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lwd=3,border="black",cex=0.7)
+dev.copy(png,file="plot1.png")
+dev.off()
